@@ -13,6 +13,8 @@
     "crossroads": "~0.12.0",
     "signals": "~1.0.0",
     "requirejs": "~2.1.16",
-    "backbone": "~1.1.2"
+    "backbone": "~1.1.2",
+    "requirejs-plugins": "~1.0.3",
+    "requirejs-text": "~2.0.14"
   }
 }

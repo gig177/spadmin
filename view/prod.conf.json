@@ -1,0 +1,7 @@
+{
+    "baseUrl": "js",
+    "optimize": "uglify2",
+    "findNestedDependencies": true,
+    "optimizeAllPluginResources": true,
+    "preserveLicenseComments": false
+}

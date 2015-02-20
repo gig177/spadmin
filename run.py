@@ -7,9 +7,7 @@ app = Flask(__name__, template_folder='view/templates',
 
 @app.route('/admin/')
 def index():
-    return 'index'
-    #return render_template('ab.html')
-    #return render_template('main.html')
+    return render_template('index.html', layout='index') 
 
 host = '0.0.0.0'
 host = '127.0.0.1'

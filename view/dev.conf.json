@@ -1,0 +1,18 @@
+{
+    "baseUrl": "/view/js/",
+    "paths": {
+        "view": "..",
+        "view/template": "../ctpl"
+    },
+    "waitSeconds": 200,
+    "shim": {
+        "lib/underscore": {
+            "exports": "_"
+        }
+    },
+    "map": {
+        "*": {
+            "underscore": "lib/underscore"
+        }
+    }
+}

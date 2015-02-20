@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{{ title }}</title>
+    <script>window.DEV = 1</script>
+    <script src="/view/js/lib/require.js"></script>
+    <script>
+        requirejs.config({
+            baseUrl: '/view/js',
+            paths: {
+                json: 'lib/require-json',
+                text: 'lib/require-text'
+            }
+        });
+        require(['json!../dev.conf.json'], function(conf) {
+            requirejs.config(conf);
+            require(['layouts/{{ layout }}']);
+        });
+    </script>
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>
