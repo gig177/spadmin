@@ -1,9 +1,5 @@
 define(function(require) {
-    require('lib/bootstrap-file-input');
-
-    require('css!view/ccss/layouts/main');
-
-    var Backbone = require('lib/backbone');
+    //var Backbone = require('lib/backbone');
 
 
 
