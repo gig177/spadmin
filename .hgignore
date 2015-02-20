@@ -1,0 +1,7 @@
+syntax: glob
+cd/
+view/components
+view/node_modules
+view/dist
+view/mjs
+view/ctpl

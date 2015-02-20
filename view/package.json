@@ -1,0 +1,11 @@
+{
+  "name": "admin",
+  "author": "Evgeniy Poturaev",
+  "private": "true",
+  "version": "0.0.0",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "gulp-task-install": "^1.0.3"
+  }
+}
