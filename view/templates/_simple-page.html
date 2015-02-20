@@ -15,7 +15,8 @@
         });
         require(['json!../dev.conf.json'], function(conf) {
             requirejs.config(conf);
-            require(['layouts/{{ layout }}']);
+            //require(['layouts/{{ layout }}']);
+            require(['init']);
         });
     </script>
 </head>

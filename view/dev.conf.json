@@ -19,5 +19,6 @@
             "signals": "lib/signals",
             "jquery": "lib/jquery"
         }
-    }
+    },
+    "packages": ["app"]
 }
