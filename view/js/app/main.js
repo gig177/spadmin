@@ -1,15 +1,21 @@
 define(function(require) {
-    require('app/routes');
+    var Backbone = require('lib/backbone');
 
-    var Backbone = require('lib/backbone'),
-        Map = require('lib/crossroads');
+    var Router = require('app/router'),
+        urlMap = require('app/url-map');
 
+    var router = new Router(urlMap);
     return function() {
         Backbone.history.handlers.push({
             route: /(.*)/,
-            callback: function (fragment) {
+            callback: function(req) {
                 cl('Map.parse running...');
-                Map.parse(fragment);
+                try {
+                    router.dispatch(req);
+                } catch (e) {
+                    cl(e);
+                    cl(e.stack);
+                }
             }
         });
         Backbone.history.start({ pushState: true }); 
@@ -18,12 +24,5 @@ define(function(require) {
             Backbone.history.navigate(href, true);
             return false;
         });
-        //cl('run app');
-        //new LibraryView();
-        /*
-        new AppRouter();
-        new AppView();
-        Backbone.history.start();
-        */
     }
 });

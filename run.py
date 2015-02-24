@@ -5,7 +5,7 @@ import os
 app = Flask(__name__, template_folder='view/templates',
             static_folder='view')
 
-@app.route('/admin/')
+@app.route('/')
 def index():
     return render_template('index.html')
 
