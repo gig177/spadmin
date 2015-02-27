@@ -1,0 +1,41 @@
+body {
+    padding-top:@navbar-height + 2px + @_colGutterWidth;
+}
+
+.navbar .navbar-right {
+    margin-right:@navbar-padding-horizontal !important;
+}
+
+.navbar .breadcrumb {
+    padding: @navbar-padding-vertical @navbar-padding-horizontal;
+    font-size: @font-size-small;
+    //line-height: @line-height-computed;
+    //height: @navbar-height;
+    margin-bottom:0 !important;
+}
+
+.navbar-fixed-bottom {
+    min-height:@_footerHeight !important;
+    text-align:center;
+    & .btn-sm {
+        margin-top:5px !important;
+        margin-bottom:5px !important;
+    }
+}
+
+._sidebar {
+    width:@_menuWidth;
+    margin-left:@_colGutterWidth;
+    position:fixed;
+
+    //background-color:lavender;
+    min-height:180px;
+}
+#_main {
+    margin-left:2 * @_colGutterWidth + @_menuWidth;
+    margin-right:@_colGutterWidth;
+    margin-bottom:@_colGutterWidth + @_footerHeight + 2px;
+
+    //background-color:green;
+    //min-height:880px;
+}

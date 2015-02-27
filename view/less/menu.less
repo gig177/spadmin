@@ -1,0 +1,34 @@
+#_menu {
+    width:inherit;
+    background-color:@navbar-default-bg;
+    border:1px solid @nav-tabs-border-color;
+    padding-top:@padding-base-vertical;
+    .border-top-radius(@border-radius-base);
+    .border-bottom-radius(@border-radius-base);
+
+    ._header {
+        color:@gray-light;
+        text-transform:uppercase;
+        background-color:@breadcrumb-bg;
+        padding:@padding-base-vertical @padding-base-horizontal;
+        border-top:1px solid @nav-tabs-border-color;
+        border-bottom:1px solid @nav-tabs-border-color;
+
+        padding:@padding-small-vertical @padding-small-horizontal;
+    }
+
+    ul a {
+        padding:@padding-small-vertical @padding-small-horizontal;
+        display:block;
+
+        &:hover {
+            text-decoration:none;
+            background-color:@nav-link-hover-bg;
+        }
+    }
+    ul .active a {
+        color:@nav-pills-active-link-hover-color;
+        background-color:@nav-pills-active-link-hover-bg;
+    }
+
+}
