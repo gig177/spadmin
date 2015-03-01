@@ -6,6 +6,9 @@
   "main": "gulpfile.js",
   "dependencies": {
     "gulp": "^3.8.11",
-    "gulp-task-install": "^1.0.3"
+    "gulp-task-install": "^1.0.3",
+    "gulp-task-lessc": "^0.0.1",
+    "gulp-watch-wrapper": "^0.0.1",
+    "merge-stream": "^0.1.7"
   }
 }
