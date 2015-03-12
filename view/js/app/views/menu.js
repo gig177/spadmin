@@ -1,7 +1,7 @@
 define(function(require) {
     var Backbone = require('lib/backbone'),
         swig = require('lib/swig'),
-        menuTpl = require('app/templates/menu');
+        menuTpl = require('tpl!app/templates/menu');
 
     var MenuView = Backbone.View.extend({
         el: '._sidebar',

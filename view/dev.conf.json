@@ -2,7 +2,8 @@
     "baseUrl": "/view/js/",
     "paths": {
         "view": "..",
-        "view/template": "../ctpl"
+        "view/template": "../ctpl",
+        "app/templates": "../ctpl/app/templates"
     },
     "waitSeconds": 200,
     "shim": {
@@ -71,11 +72,18 @@
     },
     "map": {
         "*": {
+            "tpl": "lib/tpl/tpl",
             "underscore": "lib/underscore",
             "signals": "lib/signals",
             "jquery": "lib/jquery",
             "css": "lib/require-css/css"
         }
     },
-    "packages": ["app"]
+    "packages": ["app", {
+        "name": "lib/swig",
+        "main": "swig"
+    }, {
+        "name": "lib/swig/tags",
+        "main": "index"
+    }]
 }
