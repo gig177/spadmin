@@ -6,6 +6,8 @@ define(function(require) {
     var Router = require('app/router'),
         urlMap = require('app/url-map');
 
+    var MenuView = require('app/views/menu');
+
     var router = new Router(urlMap);
     return function() {
         Backbone.history.handlers.push({
@@ -26,5 +28,7 @@ define(function(require) {
             Backbone.history.navigate(href, true);
             return false;
         });
+
+        new MenuView();
     }
 });
