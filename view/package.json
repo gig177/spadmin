@@ -7,6 +7,7 @@
   "dependencies": {
     "gulp": "^3.8.11",
     "gulp-task-install": "^1.0.3",
-    "gulp-task-less": "^1.0.0"
+    "gulp-task-less": "^1.0.0",
+    "gulp-task-swig": "^1.0.2"
   }
 }
