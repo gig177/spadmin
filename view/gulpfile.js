@@ -1,24 +1,16 @@
-var gulp = require('gulp'),
-    watchWrapper = require('gulp-watch-wrapper'),
-    mergeStream = require('merge-stream');
+var gulp = require('gulp');
 
-var installTask = require('gulp-task-install');
-    lesscTask = require('gulp-task-lessc'),
+var install = require('gulp-task-install');
+    less = require('gulp-task-less'),
 
-gulp.task('i', installTask);
+gulp.task('i', install);
 
 var lessMap = [
-    {'less/foo/bar.less' : ['less/foo/*.less']},
-    {'less/init.less'    : ['less/*.less', 'less/foo/*.less']}
+    { 'less/init.less' : 'less/*.less' }
 ];
 gulp.task('less', function() {
-    watchWrapper(lessMap, lesscTask);
+    less.watch(lessMap);
 });
 gulp.task('lessc', function() {
-    var merged = mergeStream();
-    lessMap.forEach(function(item) {
-        for (var target in item);
-        merged.add( lesscTask(target) );
-    });
-    return merged;
+    return less.compile(lessMap);
 });

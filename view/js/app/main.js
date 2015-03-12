@@ -1,4 +1,6 @@
 define(function(require) {
+    require('css!view/ccss/init');
+
     var Backbone = require('lib/backbone');
 
     var Router = require('app/router'),

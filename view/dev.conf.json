@@ -73,7 +73,8 @@
         "*": {
             "underscore": "lib/underscore",
             "signals": "lib/signals",
-            "jquery": "lib/jquery"
+            "jquery": "lib/jquery",
+            "css": "lib/require-css/css"
         }
     },
     "packages": ["app"]
