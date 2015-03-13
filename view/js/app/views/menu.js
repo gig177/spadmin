@@ -1,7 +1,11 @@
 define(function(require) {
     var Backbone = require('lib/backbone'),
-        swig = require('lib/swig'),
-        menuTpl = require('tpl!app/templates/menu');
+        swig = require('lib/swig');
+
+    var MenuCategory = require('app/collections/menu-category'),
+        MenuCategoryView = require('app/views/menu-category'),
+        menuTpl = require('tpl!app/templates/menu'),
+        menuData = require('json!app/data/menu.json');
 
     var MenuView = Backbone.View.extend({
         el: '._sidebar',
@@ -9,56 +13,34 @@ define(function(require) {
             this.render();
         },
         render: function() {
-            cl( this.$el );
-        }
-    });
-    return MenuView;
-    
-
-    return null;
-
-/*
-    var Backbone = require('lib/backbone'),
-        Library = require('app/collections/library'),
-        Book = require('app/models/book'),
-        BookView = require('app/views/book');
-
-    var LibraryView = Backbone.View.extend({
-        el: '#_main',
-        events: {
-            'click button[type=submit]': 'addBook'
-        },
-        addBook: function(e) {
-            e.preventDefault();
-            var formData = {};
-            $('form input[type=text]').each(function(i, el) {
-                if ($(el).val() && el.id)
-                    formData[el.id] = $(el).val();
-            });
-            cl(formData);
-
-            this.collection.create(formData);
-        },
-        initialize: function() {
-            this.collection = new Library();
-            this.collection.fetch({reset: true});
-            //this.render();
-
-            this.listenTo(this.collection, 'add', this.renderBook);
-            this.listenTo(this.collection, 'reset', this.render);
-        }, 
-        render: function() {
-            this.collection.each(function(item) {
-                this.renderBook(item);
+            /*
+            this.categories.forEach(function(category) {
+                category.each(function(item) {
+                    this.renderMenuItem(item);
+                }, this);
             }, this);
+            */
+            menuData.forEach(function(category) {
+                this.renderCategory(category.category, category.list);
+            }, this);
+            //this.$el.html( swig.run(menuTpl) );
+            return this;
+        },
+        renderCategory: function(name, dataList) {
+            var menuCategoryView = new MenuCategoryView({
+                collection : new MenuCategory(dataList)
+            });
+            //cl(menuCategoryView.render(name).el)
+        },
+        /*
+        createCategories: function(categories) {
+            return categories.map(function(category) {
+                //cl('MenuCategory:', MenuCategory);
+                return new MenuCategory(category.list);
+            });
         }
-        ,
-        renderBook: function(item) {
-            var bookView = new BookView({model: item});
-            $('#_books').append( bookView.render().el );
-        }
+        */
     });
 
-    return LibraryView;
-    */
+    return MenuView;
 });

@@ -1,0 +1,22 @@
+[{
+    "category": "Данные",
+    "list": [{
+        "href": "catalog",
+        "name": "Страны"
+    }, {
+        "href": "experts",
+        "name": "Сотрудники"
+    }, {
+        "href": "other",
+        "name": "Другое"
+    }]
+}, {
+    "category": "Привязка E-mail",
+    "list": [{
+        "href": "bid",
+        "name": "Заявки"
+    }, {
+        "href": "question",
+        "name": "Вопросы"
+    }]
+}]

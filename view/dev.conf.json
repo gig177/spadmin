@@ -3,7 +3,9 @@
     "paths": {
         "view": "..",
         "view/template": "../ctpl",
-        "app/templates": "../ctpl/app/templates"
+        "app/templates": "../ctpl/app/templates",
+        "json": "lib/require-json",
+        "text": "lib/require-text"
     },
     "waitSeconds": 200,
     "shim": {
