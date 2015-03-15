@@ -4,11 +4,12 @@ define(function(require) {
 
     var MenuCategory = require('app/collections/menu-category'),
         MenuCategoryView = require('app/views/menu-category'),
-        menuTpl = require('tpl!app/templates/menu'),
+        //menuTpl = require('tpl!app/templates/menu'),
         menuData = require('json!app/data/menu.json');
 
     var MenuView = Backbone.View.extend({
-        el: '._sidebar',
+        id: '_menu',
+        className: 'affix',
         initialize: function() {
             this.render();
         },
@@ -24,12 +25,14 @@ define(function(require) {
                 this.renderCategory(category.category, category.list);
             }, this);
             //this.$el.html( swig.run(menuTpl) );
-            return this;
+            $('._sidebar').append(this.el);
+            //return this;
         },
         renderCategory: function(name, dataList) {
             var menuCategoryView = new MenuCategoryView({
                 collection : new MenuCategory(dataList)
             });
+            this.$el.append( menuCategoryView.render(name).el );
             //cl(menuCategoryView.render(name).el)
         },
         /*
