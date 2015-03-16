@@ -1,3 +1,4 @@
+window.categoryCollection = [];
 define(function(require) {
     var Backbone = require('lib/backbone'),
         swig = require('lib/swig');
@@ -8,6 +9,7 @@ define(function(require) {
     var MenuCategoryView = Backbone.View.extend({
         render: function(categoryName) {
             this.$el.html( swig.run(menuCategoryTpl, { categoryName : categoryName }) );
+            window.categoryCollection.push(this.collection);
             this.collection.each(function(item) {
                 this.renderMenuItem(item);
             }, this);

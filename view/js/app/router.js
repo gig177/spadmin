@@ -4,9 +4,12 @@ define(function(require) {
     function Router(urlMap) {
         urlMap.forEach(function(rule) {
             crossroads.addRoute(rule.ptn, function() {
+                cl(rule)
+                /*
                 require(['app/modules/' + rule.module], function(module) {
-                    cl(module[rule.endpoint], rule.endpoint);
+                    cl(module, module[rule.endpoint], rule.endpoint);
                 });
+                */
             });
         });
     }

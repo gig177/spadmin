@@ -30,5 +30,7 @@ define(function(require) {
         });
 
         new MenuView();
+        //cl(window.categoryCollection);
+        m = window.categoryCollection[0].models[0];
     }
 });
