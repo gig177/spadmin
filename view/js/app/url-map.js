@@ -4,6 +4,8 @@ define(function(require) {
         rule('/',                 'catalog.index'),
         rule('/catalog/',        'catalog.tree'),
         rule('/catalog/{eid}/',  'catalog.item'),
+        rule('/experts/',        'experts.index'),
+        rule('/other/',        'other.index'),
     ];
 
     return map;

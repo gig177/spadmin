@@ -9,7 +9,7 @@ define(function(require) {
         initialize: function() {
             //this.on('change:selected', function(obj) {
             this.listenTo(this.model, 'change:selected', function(obj) {
-                cl(obj.attributes, 'change:selected');
+                //cl(obj.attributes, 'change:selected');
                 this.model.has('selected')?
                     this.$el.addClass('active'):
                     this.$el.removeClass('active');

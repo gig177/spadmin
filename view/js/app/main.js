@@ -10,6 +10,8 @@ define(function(require) {
 
     var router = new Router(urlMap);
     return function() {
+        new MenuView();
+
         Backbone.history.handlers.push({
             route: /(.*)/,
             callback: function(req) {
@@ -29,7 +31,6 @@ define(function(require) {
             return false;
         });
 
-        new MenuView();
         //cl(window.categoryCollection);
         m = window.categoryCollection[0].models[0];
     }

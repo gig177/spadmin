@@ -1,9 +1,11 @@
 define(function(require) {
     var crossroads = require('lib/crossroads');
+    var page = require('app/page');
 
     function Router(urlMap) {
         urlMap.forEach(function(rule) {
             crossroads.addRoute(rule.ptn, function() {
+                page.trigger('module', rule.module);
                 cl(rule)
                 /*
                 require(['app/modules/' + rule.module], function(module) {
