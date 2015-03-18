@@ -1,18 +1,27 @@
 define(function(require) {
-    var crossroads = require('lib/crossroads');
+    var crossroads = require('lib/crossroads'),
+        Backbone = require('lib/backbone');
+
     var page = require('app/page');
 
     function Router(urlMap) {
         urlMap.forEach(function(rule) {
-            crossroads.addRoute(rule.ptn, function() {
-                page.trigger('module', rule.module);
-                cl(rule)
-                /*
-                require(['app/modules/' + rule.module], function(module) {
-                    cl(module, module[rule.endpoint], rule.endpoint);
-                });
-                */
-            });
+            var cb = null;
+            if (rule.opts.redirect) {
+                cb = function() {
+                    Backbone.history.navigate(rule.opts.redirect, true);
+                };
+            } else {
+                cb = function() {
+                    cl('routed to:', rule);
+                    page.trigger('module', rule.module);
+                    require(['app/modules/' + rule.module], function(module) {
+                        module[rule.endpoint]();
+                        //cl(module, module[rule.endpoint], rule.endpoint);
+                    });
+                };
+            }
+            crossroads.addRoute(rule.ptn, cb);
         });
     }
     Router.prototype.dispatch = function(req) {
