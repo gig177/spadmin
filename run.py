@@ -5,8 +5,9 @@ import os
 app = Flask(__name__, template_folder='view/templates',
             static_folder='view')
 
+@app.route('/<module>/')
 @app.route('/')
-def index():
+def index(module=False):
     return render_template('index.html')
 
 host = '0.0.0.0'
