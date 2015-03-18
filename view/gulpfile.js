@@ -7,7 +7,8 @@ var install = require('gulp-task-install');
 gulp.task('i', install);
 
 var lessMap = [
-    { 'less/init.less' : 'less/*.less' }
+    { 'less/init.less' : 'less/*.less' },
+    { 'js/app/less/catalog.tree.less' : ['less/variables.less', 'js/app/less/catalog.tree.less'] }
 ];
 gulp.task('less', function() {
     less.watch(lessMap);

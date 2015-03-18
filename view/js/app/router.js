@@ -15,10 +15,7 @@ define(function(require) {
                 cb = function() {
                     cl('routed to:', rule);
                     page.trigger('module', rule.module);
-                    require(['app/modules/' + rule.module], function(module) {
-                        module[rule.endpoint]();
-                        //cl(module, module[rule.endpoint], rule.endpoint);
-                    });
+                    require(['app/modules/' + rule.module + '/' + rule.endpoint]);
                 };
             }
             crossroads.addRoute(rule.ptn, cb);
