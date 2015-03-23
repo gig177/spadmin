@@ -46,9 +46,9 @@ define(function(require) {
             });
             */
 
-            var treeView = new TreeView(318);
+            var childrenView = new TreeChildrenView(318);
             var self = this;
-            treeView.render().done(function(el) {
+            childrenView.render().done(function(el) {
                 self.$el.append(el);
             });
 
@@ -61,7 +61,7 @@ define(function(require) {
         }
     });
 
-    var TreeView = Backbone.View.extend({
+    var TreeChildrenView = Backbone.View.extend({
         tagName: 'ul',
         initialize: function(pid) {
             if (!pid) this.$el.addClass('_treeview');
@@ -86,5 +86,5 @@ define(function(require) {
         }
     });
 
-    return TreeView;
+    return TreeChildrenView;
 });
