@@ -2,7 +2,7 @@ define(function(require) {
     var Backbone = require('lib/backbone'),
         _ = require('lib/underscore');
 
-    var TreeView = require('app/views/tree');
+    var CatalogTreeView = require('app/views/catalog.tree');
 
-    new TreeView();
+    new CatalogTreeView();
 });

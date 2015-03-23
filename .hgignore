@@ -6,3 +6,4 @@ view/dist
 view/mjs
 view/ctpl
 view/ccss
+__pycache__
