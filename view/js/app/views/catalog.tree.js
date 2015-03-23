@@ -6,7 +6,7 @@ define(function(require) {
 
     var TreeView = require('app/views/tree');
 
-    var CatalogTreeView = Backbone.View.extend({
+    var ContentView = Backbone.View.extend({
         initialize: function() {
             this.render();
         },
@@ -20,5 +20,5 @@ define(function(require) {
         }
     });
 
-    return CatalogTreeView;
+    return ContentView;
 });
