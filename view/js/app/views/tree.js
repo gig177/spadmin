@@ -28,7 +28,7 @@ define(function(require) {
     var NodeView = Backbone.View.extend({
         tagName: 'li',
         events: {
-            'click span': 'getChildren'
+            'click i': 'getChildren'
         },
         initialize: function() {
         },
