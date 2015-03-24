@@ -1,6 +1,7 @@
 #!/bin/env python
 from flask import Flask, render_template, request, Response
 from jsonify import jsonify
+from time import sleep
 import os
 
 app = Flask(__name__, template_folder='view/templates',
@@ -18,6 +19,7 @@ def catalogChildren(pid=False):
     if not pid:
         return [ { 'name' : 'ОАЭ', 'eid' : 1 },
                  { 'name' : 'Великобритания', 'eid' : 318 } ]
+    #sleep(2)
     return [ { 'name' : 'Регионы', 'eid' : 23 },
              { 'name' : 'О стране', 'eid' : 2 } ]
 

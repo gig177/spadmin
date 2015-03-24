@@ -1,6 +1,9 @@
 define(function(require) {
     require('css!view/ccss/catalog.tree');
 
+    require('lib/velocity');
+    require('lib/velocity.ui');
+
     var Backbone = require('lib/backbone'),
         swig = require('lib/swig'),
         $ = require('lib/jquery');
@@ -36,28 +39,44 @@ define(function(require) {
             this.$el.html( swig.run(treeNodeTpl, this.model.attributes) );
             return this;
         },
+        setLoadingIcon: function() {
+            this.$el.children('i').attr('class', 'glyphicon glyphicon-refresh fa-spin');
+        },
+        setDefaultIcon: function() {
+            this.$el.children('i').attr('class', 'glyphicon glyphicon-circle-arrow-right');
+        },
+        setOpenIcon: function() {
+            this.$el.children('i').attr('class', 'glyphicon glyphicon-circle-arrow-down');
+        },
         getChildren: function(e) {
+            e.stopPropagation();
+            //this.setLoadingIcon();
+
             /*
-            var children = new TreeView(318);
-            cl(children.render().el);
-
-            treeView.render().done(function(el) {
-                self.$el.append(el);
-            });
+            this.$el.find('i').velocity({ rotateZ : '45deg' }, { duration : 100, complete : function() {
+            }});
             */
-
-            var childrenView = new TreeChildrenView(318);
+            var childrenView = new TreeChildrenView( this.model.get('eid') );
             var self = this;
             childrenView.render().done(function(el) {
+                self.setOpenIcon();
+                /*
+                self.$el.find('i').velocity({ rotateZ : '45deg' }, { duration : 250, complete : function() {
+                    cl('animation complete');
+                }});
+                */
                 self.$el.append(el);
+                //self.$el.find('ul').velocity('transition.swoopIn');
+                //self.$el.find('ul').velocity('transition.swoopIn', { duration : 200 });
+                //self.$el.find('ul').velocity('transition.flipYIn', { duration : 200 });
+                //self.$el.find('ul').velocity('transition.shrinkIn', { duration : 200 });
+                //self.$el.find('ul').velocity('transition.bounceLeftIn', { duration : 200 });
+                //self.$el.find('ul').velocity('transition.slideDownIn', { duration : 200 });
+                self.$el.find('ul').velocity('transition.perspectiveLeftIn', { duration : 300 });
+                cl(
+                self.$el.find('ul')
+                )
             });
-
-            /*
-            var collection = new col();
-            collection.fetch({ reset : true });
-            this.model.set('children', collection);
-            cl(this.model.attributes);
-            */
         }
     });
 
