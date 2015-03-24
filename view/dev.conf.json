@@ -78,6 +78,7 @@
             "underscore": "lib/underscore",
             "signals": "lib/signals",
             "jquery": "lib/jquery",
+            "velocity": "lib/velocity",
             "css": "lib/require-css/css"
         }
     },
