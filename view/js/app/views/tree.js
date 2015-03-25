@@ -113,10 +113,11 @@ define(function(require) {
             //this.$el.find('ul').velocity('transition.shrinkIn', { duration : 200 });
             //this.$el.find('ul').velocity('transition.bounceLeftIn', { duration : 200 });
             //this.$el.find('ul').velocity('transition.slideDownIn', { duration : 200 });
-            this.$el.velocity('transition.perspectiveLeftIn', { duration : 300 });
+            //this.$el.velocity('transition.perspectiveLeftIn', { duration : 300 });
+            this.$el.velocity('slideDown', { duration : 200 });
         },
         close: function() {
-            this.$el.velocity('transition.perspectiveLeftOut', { duration : 300 });
+            this.$el.velocity('slideUp', { duration : 200 });
         }
     });
 
