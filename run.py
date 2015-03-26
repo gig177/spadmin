@@ -17,11 +17,22 @@ def index(module=False):
 @jsonify()
 def catalogChildren(pid=False):
     if not pid:
-        return [ { 'name' : 'ОАЭ', 'eid' : 1 },
-                 { 'name' : 'Великобритания', 'eid' : 318 } ]
+        return [ { 'name' : 'Великобритания', 'eid' : 318 },
+                 { 'name' : 'ОАЭ', 'eid' : 1 } ]
+
+        return [ { 'eid' : 1,   'name' : 'ОАЭ' },
+                 { 'eid' : 318, 'name' : 'Великобритания' } ]
     #sleep(2)
-    return [ { 'name' : 'Регионы', 'eid' : 23 },
-             { 'name' : 'О стране', 'eid' : 2 } ]
+    if pid == 1:
+        return [ { 'eid' : 23, 'name' : 'Регионы' },
+                 { 'eid' : 2,  'name' : 'О стране' },
+                 { 'eid' : 4,  'name' : 'Отели и цены' } ]
+    if pid == 23:
+        return [ { 'eid' : 26, 'name' : 'Абу-Даби' },
+                 { 'eid' : 45, 'name' : 'Аджман' },
+                 { 'eid' : 24, 'name' : 'Дубай' } ]
+
+
 
 host = '0.0.0.0'
 host = '127.0.0.1'
