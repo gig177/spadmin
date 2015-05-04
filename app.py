@@ -36,3 +36,8 @@ def catalogChildren(pid=False):
 def create():
     return dict(id=34), 201
     #return Response('hello', 201)
+
+@app.route('/api/catalog/<int:id>')
+@jsonify()
+def read(id):
+    return dict(id=34)
