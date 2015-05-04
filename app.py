@@ -41,3 +41,8 @@ def create():
 @jsonify()
 def read(id):
     return dict(id=34)
+
+@app.route('/api/catalog/<int:id>', methods=['PUT'])
+@jsonify()
+def update(id):
+    return dict(id=34)

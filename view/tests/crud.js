@@ -1,3 +1,4 @@
+var cl = console.log;
 var assert = require('assert'),
     req = require('supertest')('http://localhost:5000'),
     Q = require('q');
@@ -22,43 +23,63 @@ SimpleCRUD.prototype.create = function(should) {
                 })
                 .end(function(err, res) {
                     assert.ifError(err)
-                    deferred.resolve(res.body)
+                    deferred.resolve(res.body.id)
                     done()
                 });
         });
     });
-    this._promise = deferred.promise;
-    return this;
+    return deferred.promise;
 }
-SimpleCRUD.prototype.read = function(should) {
-    var deferred = Q.defer(),
-        self = this;
-    this._promise.done(function(item) {
-        describe('GET /api/catalog/' + item.id, function() {
-            it(should, function(done) {
-                req.get('/api/catalog/' + item.id)
-                    .set('Content-Type', 'application/json')
-                    .expect('Content-Type', /json/)
-                    .expect(200)
-                    .expect(function(res) {
-                        assert(~~res.body.id);
-                    })
-                    .end(function(err, res) {
-                        assert.ifError(err)
-                        deferred.resolve(res.body)
-                        done()
-                    });
-            });
+SimpleCRUD.prototype.read = function(should, id) {
+    var deferred = Q.defer();
+    describe('GET /api/catalog/' + id, function() {
+        it(should, function(done) {
+            req.get('/api/catalog/' + id)
+                .set('Content-Type', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .expect(function(res) {
+                    assert(~~res.body.id);
+                })
+                .end(function(err, res) {
+                    assert.ifError(err)
+                    deferred.resolve(res.body.id)
+                    done()
+                });
         });
-        self._promise = deferred.promise;
     });
-    return this;
+    return deferred.promise;
 }
-SimpleCRUD.prototype.update = function() {
+SimpleCRUD.prototype.put = function(should, id) {
+    var deferred = Q.defer();
+    describe('PUT /api/catalog/' + id, function() {
+        it(should, function(done) {
+            req.put('/api/catalog/' + id)
+                .set('Content-Type', 'application/json')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .expect(function(res) {
+                    assert(~~res.body.id);
+                })
+                .end(function(err, res) {
+                    assert.ifError(err)
+                    setTimeout(function() {
+                        deferred.resolve(res.body)
+                        done();
+                    }, 1500);
+                });
+        });
+    });
+    return deferred.promise;
 }
 SimpleCRUD.prototype.delete = function() {
 }
 
-new SimpleCRUD('/api/catalog')
-    .create('should create new item')
-    .read('should read item');
+var crud = new SimpleCRUD('/api/catalog')
+crud.create('should create new item')
+    .then(function(id) {
+        return crud.read('should read item', id);
+    })
+    .then(function(id) {
+        return crud.put('should full update item', id);
+    })
