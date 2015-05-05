@@ -11,6 +11,7 @@ app = Flask(__name__, template_folder='view/templates',
 def index(module=False):
     return render_template('index.html')
 
+"""
 @app.route('/api/catalog/')
 @app.route('/api/catalog/<int:pid>/children/')
 @jsonify()
@@ -30,8 +31,9 @@ def catalogChildren(pid=False):
         return [ { 'eid' : 26, 'name' : 'Абу-Даби' },
                  { 'eid' : 45, 'name' : 'Аджман' },
                  { 'eid' : 24, 'name' : 'Дубай' } ]
+"""
 
-@app.route('/api/catalog/', methods=['POST'])
+@app.route('/api/catalog', methods=['POST'])
 @jsonify()
 def create():
     return dict(id=34), 201

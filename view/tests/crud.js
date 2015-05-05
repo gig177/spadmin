@@ -8,12 +8,13 @@ function SimpleCRUD(url) {
 }
 SimpleCRUD.prototype.create = function(should) {
     var deferred = Q.defer();
-    describe('POST /api/catalog/', function() {
+    var url = this._url;
+    describe('POST ' + url, function() {
         it(should, function(done) {
             var data = {
                 name: 'Barrack'
             };
-            req.post('/api/catalog/')
+            req.post(url)
                 .set('Content-Type', 'application/json')
                 .send(data)
                 .expect('Content-Type', /json/)
@@ -32,9 +33,10 @@ SimpleCRUD.prototype.create = function(should) {
 }
 SimpleCRUD.prototype.read = function(should, id) {
     var deferred = Q.defer();
-    describe('GET /api/catalog/' + id, function() {
+    var url = this._url + '/' + id;
+    describe('GET ' + url, function() {
         it(should, function(done) {
-            req.get('/api/catalog/' + id)
+            req.get(url)
                 .set('Content-Type', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
@@ -52,9 +54,10 @@ SimpleCRUD.prototype.read = function(should, id) {
 }
 SimpleCRUD.prototype.put = function(should, id) {
     var deferred = Q.defer();
-    describe('PUT /api/catalog/' + id, function() {
+    var url = this._url + '/' + id;
+    describe('PUT ' + url, function() {
         it(should, function(done) {
-            req.put('/api/catalog/' + id)
+            req.put(url)
                 .set('Content-Type', 'application/json')
                 .expect('Content-Type', /json/)
                 .expect(200)
