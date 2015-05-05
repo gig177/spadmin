@@ -6,7 +6,7 @@ var assert = require('assert'),
 function SimpleCRUD(url) {
     this._url = url;
 }
-SimpleCRUD.prototype.create = function(should) {
+SimpleCRUD.prototype.create = function(should, status) {
     var deferred = Q.defer();
     var url = this._url;
     describe('POST ' + url, function() {
@@ -78,10 +78,29 @@ SimpleCRUD.prototype.put = function(should, id) {
 SimpleCRUD.prototype.delete = function() {
 }
 
-var crud = new SimpleCRUD('/api/catalog')
-crud.create('should create new item')
+var book = {
+    name: 'JavaScript: The Definitive Guide 6th',
+    author: 'David Flanagan',
+    pages: 1032,
+    released: '2015-03',
+    lang: en
+};
+function BaseValidator() {
+}
+
+var crud = new SimpleCRUD('/api/catalog');
+crud.create('should create a new item', 201, BaseValidator)
     .then(function(id) {
-        return crud.read('should read item', id);
+        return crud.create('should throw an error when an item is duplicated', 403)
+        /*.then(function() {
+            return crud.create('should throw an error when item is conflicted', 409);
+        });*/
+    })
+    .then(function(id) {
+        return crud.create('should read the item', id);
+    })
+    .then(function(id) {
+        return crud.read('should read item', id)
     })
     .then(function(id) {
         return crud.put('should full update item', id);
