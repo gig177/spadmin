@@ -3,30 +3,46 @@ var assert = require('assert'),
     req = require('supertest')('http://localhost:5000'),
     Q = require('q');
 
+req = (function(req) {
+    return function(method, url, status, item, validators) {
+        var r = req.post(url)
+            .set('Content-Type', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(201);
+        validators = validators instanceof Object? [validators]: [];
+        if (validators.length) {
+            validators.forEach(function(validator) {
+                validator = new validator();
+                var prop = null;
+                for (prop in validator) {
+                    if (validator[prop] instanceof Function) {
+                        r.expect(function(res) {
+                            validator[prop]( res.body[prop] );
+                            //assert(~~res.body.id);
+                        })
+                    }
+                }
+            });
+        }
+        if (item instanceof Object)
+            r.send(item);
+        return r;
+    }
+})(req);
+    
 function SimpleCRUD(url) {
     this._url = url;
 }
-SimpleCRUD.prototype.create = function(should, status) {
+SimpleCRUD.prototype.create = function(status, item, should, validators) {
     var deferred = Q.defer();
     var url = this._url;
     describe('POST ' + url, function() {
         it(should, function(done) {
-            var data = {
-                name: 'Barrack'
-            };
-            req.post(url)
-                .set('Content-Type', 'application/json')
-                .send(data)
-                .expect('Content-Type', /json/)
-                .expect(201)
-                .expect(function(res) {
-                    assert(~~res.body.id);
-                })
-                .end(function(err, res) {
-                    assert.ifError(err)
-                    deferred.resolve(res.body.id)
-                    done()
-                });
+            req('post', url, 201, item, validators).end(function(err, res) {
+                assert.ifError(err)
+                deferred.resolve(res.body.id)
+                done()
+            });
         });
     });
     return deferred.promise;
@@ -36,6 +52,7 @@ SimpleCRUD.prototype.read = function(should, id) {
     var url = this._url + '/' + id;
     describe('GET ' + url, function() {
         it(should, function(done) {
+            /*
             req.get(url)
                 .set('Content-Type', 'application/json')
                 .expect('Content-Type', /json/)
@@ -48,6 +65,7 @@ SimpleCRUD.prototype.read = function(should, id) {
                     deferred.resolve(res.body.id)
                     done()
                 });
+            */
         });
     });
     return deferred.promise;
@@ -78,30 +96,13 @@ SimpleCRUD.prototype.put = function(should, id) {
 SimpleCRUD.prototype.delete = function() {
 }
 
-var book = {
-    name: 'JavaScript: The Definitive Guide 6th',
-    author: 'David Flanagan',
-    pages: 1032,
-    released: '2015-03',
-    lang: en
-};
-function BaseValidator() {
+function BaseValidator(item) {
+    this._item = item;
+}
+BaseValidator.prototype.id = function() {
+}
+BaseValidator.prototype.created = function() {
 }
 
-var crud = new SimpleCRUD('/api/catalog');
-crud.create('should create a new item', 201, BaseValidator)
-    .then(function(id) {
-        return crud.create('should throw an error when an item is duplicated', 403)
-        /*.then(function() {
-            return crud.create('should throw an error when item is conflicted', 409);
-        });*/
-    })
-    .then(function(id) {
-        return crud.create('should read the item', id);
-    })
-    .then(function(id) {
-        return crud.read('should read item', id)
-    })
-    .then(function(id) {
-        return crud.put('should full update item', id);
-    })
+module.exports.SimpleCRUD = SimpleCRUD;
+module.exports.BaseValidator = BaseValidator;
