@@ -11,18 +11,24 @@ var book = {
     lang: 'en'
 };
 
-var validators = {};
-validators.id = validators.created = function(value) {
-    assert(~~value);
-}
+function CreateValidator() {}
+CreateValidator.prototype = new BaseValidator();
 
-function CreatedValidator() {}
-CreatedValidator.prototype = validators;
-}
-
+/*
+(function() {
+    var validator = new CreateValidator();
+    var prop = null;
+    for (prop in validator) {
+        if (validator[prop] instanceof Function) {
+            cl('\tprop:', prop);
+            cl(validator[prop].toString())
+        }
+    }
+})()
+*/
 
 var crud = new SimpleCRUD('/api/catalog');
-crud.create(201, book, 'should create a new item', CreatedValidator)
+crud.create(201, book, 'should create a new item', CreateValidator)
     /*
     .then(function(id) {
         return crud.create(403, 'should throw an error when an item is duplicated', 403)

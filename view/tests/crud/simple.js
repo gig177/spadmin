@@ -11,16 +11,26 @@ req = (function(req) {
             .expect(201);
         validators = validators instanceof Object? [validators]: [];
         if (validators.length) {
-            validators.forEach(function(validator) {
-                validator = new validator();
+            validators.forEach(function(valid) {
+                var validator = new valid();
                 var prop = null;
                 for (prop in validator) {
                     if (validator[prop] instanceof Function) {
-                        r.expect(function(res) {
-                            validator[prop]( res.body[prop] );
-                            //assert(~~res.body.id);
-                        })
+                        var fn = validator[prop];
+                        (function(validator) {
+                            cl('\tprop:', prop);
+                            //cl(validator.toString());
+                            cl('---------------------');
+                            r.expect(function(res) {
+                                validator[prop]( res.body[prop] );
+                                cl(validator.toString());
+                                //assert(~~res.body.id);
+                            })
+                            /*
+                            */
+                        })(fn);
                     }
+
                 }
             });
         }
@@ -96,12 +106,14 @@ SimpleCRUD.prototype.put = function(should, id) {
 SimpleCRUD.prototype.delete = function() {
 }
 
-function BaseValidator(item) {
-    this._item = item;
+function BaseValidator(item) {}
+BaseValidator.prototype.id = function(value) {
+    assert(~~value);
 }
-BaseValidator.prototype.id = function() {
-}
-BaseValidator.prototype.created = function() {
+BaseValidator.prototype.created = function(value) {
+    assert(~~value);
+
+    var d = new Date(value * 1000);
 }
 
 module.exports.SimpleCRUD = SimpleCRUD;
