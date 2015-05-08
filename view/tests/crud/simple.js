@@ -5,14 +5,8 @@ var assert = require('assert'),
 
 req = (function(req) {
     return function(method, url, status, item, validators) {
-        if (!(item instanceof Object)) {
-            url += '/' + item;
-            item == null;
-        }
         validators = validators instanceof Object? [validators]: [];
-        //cl(url, item)
-        
-        var r = req.post(url)
+        var r = req[method](url)
             .set('Content-Type', 'application/json')
             .expect('Content-Type', /json/)
             .expect(status);
@@ -40,8 +34,27 @@ req = (function(req) {
     }
 })(req);
     
+
 function SimpleCRUD(url) {
     this._url = url;
+}
+SimpleCRUD.prototype._unifiedRequest = function(method, status, item, should, validators) {
+    var deferred = Q.defer();
+    var url = this._url;
+    if (!(item instanceof Object)) {
+        url += '/' + item;
+        item = null;
+    }
+    describe(method + ' ' + url, function() {
+        it(should, function(done) {
+            req(method.toLowerCase(), url, status, item, validators).end(function(err, res) {
+                assert.ifError(err);
+                deferred.resolve(res.body.id);
+                done();
+            });
+        });
+    });
+    return deferred.promise;
 }
 SimpleCRUD.prototype.create = function(status, item, should, validators) {
     var deferred = Q.defer();
@@ -57,28 +70,8 @@ SimpleCRUD.prototype.create = function(status, item, should, validators) {
     });
     return deferred.promise;
 }
-SimpleCRUD.prototype.read = function(should, id) {
-    var deferred = Q.defer();
-    var url = this._url + '/' + id;
-    describe('GET ' + url, function() {
-        it(should, function(done) {
-            /*
-            req.get(url)
-                .set('Content-Type', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .expect(function(res) {
-                    assert(~~res.body.id);
-                })
-                .end(function(err, res) {
-                    assert.ifError(err)
-                    deferred.resolve(res.body.id)
-                    done()
-                });
-            */
-        });
-    });
-    return deferred.promise;
+SimpleCRUD.prototype.read = function(status, item, should, validators) {
+    return this._unifiedRequest('GET', status, item, should, validators);
 }
 SimpleCRUD.prototype.put = function(should, id) {
     var deferred = Q.defer();
