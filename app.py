@@ -33,11 +33,9 @@ def catalogChildren(pid=False):
                  { 'eid' : 24, 'name' : 'Дубай' } ]
 """
 
-i = 0
 @app.route('/api/catalog', methods=['POST'])
 @jsonify()
 def create():
-    print(++i)
     return dict(id=34, created=1431015379), 201
     #return Response('hello', 201)
 
