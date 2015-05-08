@@ -5,11 +5,17 @@ var assert = require('assert'),
 
 req = (function(req) {
     return function(method, url, status, item, validators) {
+        if (!(item instanceof Object)) {
+            url += '/' + item;
+            item == null;
+        }
+        validators = validators instanceof Object? [validators]: [];
+        //cl(url, item)
+        
         var r = req.post(url)
             .set('Content-Type', 'application/json')
             .expect('Content-Type', /json/)
-            .expect(201);
-        validators = validators instanceof Object? [validators]: [];
+            .expect(status);
         if (validators.length) {
             r.expect(function(res) {
                 validators.forEach(function(Validator) {
@@ -42,7 +48,7 @@ SimpleCRUD.prototype.create = function(status, item, should, validators) {
     var url = this._url;
     describe('POST ' + url, function() {
         it(should, function(done) {
-            req('post', url, 201, item, validators).end(function(err, res) {
+            req('post', url, status, item, validators).end(function(err, res) {
                 assert.ifError(err);
                 deferred.resolve(res.body.id);
                 done();
