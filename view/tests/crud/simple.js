@@ -43,9 +43,9 @@ SimpleCRUD.prototype.create = function(status, item, should, validators) {
     describe('POST ' + url, function() {
         it(should, function(done) {
             req('post', url, 201, item, validators).end(function(err, res) {
-                assert.ifError(err)
-                deferred.resolve(res.body.id)
-                done()
+                assert.ifError(err);
+                deferred.resolve(res.body.id);
+                done();
             });
         });
     });
