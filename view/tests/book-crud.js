@@ -35,7 +35,7 @@ crud.create(201, book, 'should create a new item', CreateValidator)
     })
     */
     .then(function(id) {
-        return crud.read(200, id, 'should read item');
+        return crud.read(200, id, 'should read the item');
     })
     /*
     .then(function(id) {
