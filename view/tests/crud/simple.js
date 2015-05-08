@@ -11,27 +11,21 @@ req = (function(req) {
             .expect(201);
         validators = validators instanceof Object? [validators]: [];
         if (validators.length) {
-            validators.forEach(function(valid) {
-                var validator = new valid();
-                var prop = null;
-                for (prop in validator) {
-                    if (validator[prop] instanceof Function) {
-                        var fn = validator[prop];
-                        (function(validator) {
-                            cl('\tprop:', prop);
-                            //cl(validator.toString());
-                            cl('---------------------');
-                            r.expect(function(res) {
-                                validator[prop]( res.body[prop] );
-                                cl(validator.toString());
-                                //assert(~~res.body.id);
-                            })
+            r.expect(function(res) {
+                validators.forEach(function(Validator) {
+                    var validator = new Validator();
+                    var prop = null;
+                    for (prop in validator) {
+                        if (validator[prop] instanceof Function) {
                             /*
+                            cl('\tprop:', prop);
+                            cl('validator[prop]:', validator[prop]);
                             */
-                        })(fn);
+                            validator[prop]( res.body[prop] );
+                            //cl('---------------------');
+                        }
                     }
-
-                }
+                });
             });
         }
         if (item instanceof Object)
