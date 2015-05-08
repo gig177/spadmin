@@ -36,8 +36,7 @@ def catalogChildren(pid=False):
 @app.route('/api/catalog', methods=['POST'])
 @jsonify()
 def create():
-    return dict(id=34, created=1431015379), 201
-    #return Response('hello', 201)
+    return dict(id=34, name='root', title='root', created=1431015379), 201
 
 @app.route('/api/catalog/<int:id>')
 @jsonify()
