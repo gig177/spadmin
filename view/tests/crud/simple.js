@@ -62,28 +62,8 @@ SimpleCRUD.prototype.create = function(status, item, should, validators) {
 SimpleCRUD.prototype.read = function(status, item, should, validators) {
     return this._unifiedRequest('GET', status, item, should, validators);
 }
-SimpleCRUD.prototype.put = function(should, id) {
-    var deferred = Q.defer();
-    var url = this._url + '/' + id;
-    describe('PUT ' + url, function() {
-        it(should, function(done) {
-            req.put(url)
-                .set('Content-Type', 'application/json')
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .expect(function(res) {
-                    assert(~~res.body.id);
-                })
-                .end(function(err, res) {
-                    assert.ifError(err)
-                    setTimeout(function() {
-                        deferred.resolve(res.body)
-                        done();
-                    }, 1500);
-                });
-        });
-    });
-    return deferred.promise;
+SimpleCRUD.prototype.put = function(status, item, should, validators) {
+    return this._unifiedRequest('PUT', status, item, should, validators);
 }
 SimpleCRUD.prototype.delete = function() {
 }
