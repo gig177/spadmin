@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, g
 from jsonify import jsonify
 from time import sleep
 import os
@@ -36,6 +36,9 @@ def catalogChildren(pid=False):
 @app.route('/api/catalog', methods=['POST'])
 @jsonify()
 def create():
+    postRequestIndex = getattr(g, '_postRequestIndex', 0)
+    setattr(g, '_postRequestIndex', postRequestIndex + 1)
+    print(postRequestIndex)
     return dict(id=34, name='root', title='root', created=1431015379), 201
 
 @app.route('/api/catalog/<int:id>')
