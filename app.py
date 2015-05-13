@@ -40,11 +40,14 @@ def catalogChildren(pid=False):
 """
 
 @app.route('/api/catalog', methods=['POST'])
-@jsonify()
+@jsonify(Node)
 def create():
     fields = request.get_json()
     fields['name'] = removeSpecialChars( fields.get('name', '') )
-    fields['segment'] = translit( fields['name'] )
+    if 'segment' in fields:
+        fields['segment'] = translit( fields['segment'] )
+    else:
+        fields['segment'] = translit( fields['name'] )
     #print(fields)
 
     """
@@ -52,17 +55,45 @@ def create():
         403 or 409 error
     """
 
-    #node = Node(fields)
-    #dbsess.add(node)
-    #dbsess.commit()
-    return dict(id=34, name='root', title='root', created=1431015379), 201
+    node = Node(fields['name'])
+    node.segment = fields['segment']
+    dbsess.add(node)
+    dbsess.commit()
+
+    return node, 201
+    #return dict(id=34, name='root', title='root', created=1431015379), 201
+
+def _read(id):
+    try:
+        node = dbsess.query(Node).filter_by(id=id).one()
+    except:
+        return "Item %s doesn't exist" % id, 404 
+    return node
 
 @app.route('/api/catalog/<int:id>')
-@jsonify()
+@jsonify(Node)
 def read(id):
-    return dict(id=34)
+    return _read(id)
 
-@app.route('/api/catalog/<int:id>', methods=['PUT'])
-@jsonify()
+@app.route('/api/catalog/<int:id>', methods=['PATCH'])
+@jsonify(Node)
 def update(id):
-    return dict(id=34)
+    fields = request.get_json()
+
+    node = _read(id)
+    if 'name' in fields:
+        node.name = removeSpecialChars( fields['name'] )
+    if 'segment' in fields:
+        node.segment = translit( fields['segment'] )
+    dbsess.add(node)
+    dbsess.commit()
+
+    return node
+
+@app.route('/api/catalog/<int:id>', methods=['DELETE'])
+@jsonify(Node)
+def delete(id):
+    node = _read(id)
+    dbsess.delete(node)
+    dbsess.commit()
+    return ''
