@@ -9,20 +9,29 @@ var page = {
 
 var url = '/api/catalog';
 describe('CREATE', function() {
+    before(function(done) {
+        setTimeout(function() {
+            cl('0');
+            done()
+        }, 300);
+    });
     var deferred = Q.defer();
     describe('POST ' + url, function() {
         var resp = null;
         before(function(done) {
-            req.post(url)
-                .set('Content-Type', 'application/json')
-                .expect('Content-Type', /json/)
-                .send(page)
-                .expect(201)
-                .end(function(err, res) {
-                    should.not.exist(err);
-                    resp = res.body;
-                    done();
-                });
+            setTimeout(function() {
+                req.post(url)
+                    .set('Content-Type', 'application/json')
+                    .expect('Content-Type', /json/)
+                    .send(page)
+                    .expect(201)
+                    .end(function(err, res) {
+                        should.not.exist(err);
+                        resp = res.body;
+                        cl('1');
+                        done();
+                    });
+            }, 350);
         });
         it('should create a new item', function() {
             resp.id.should.be.a('number');
@@ -37,6 +46,8 @@ describe('CREATE', function() {
     });
     describe('POST ' + url, function() {
         before(function(done) {
+            done()
+            /*
             deferred.promise.then(function(id) {
                 req.post(url)
                     .set('Content-Type', 'application/json')
@@ -49,6 +60,7 @@ describe('CREATE', function() {
                         done();
                     });
             });
+            */
         });
         it('should throw an error when an item is duplicated', function() {
         });

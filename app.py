@@ -3,6 +3,12 @@ from jsonify import jsonify
 from time import sleep
 import os
 
+from database import dbsess
+from models import *
+
+from helpers.url import translit
+from helpers.string import removeSpecialChars
+
 app = Flask(__name__, template_folder='view/templates',
             static_folder='view')
 
@@ -36,9 +42,19 @@ def catalogChildren(pid=False):
 @app.route('/api/catalog', methods=['POST'])
 @jsonify()
 def create():
-    postRequestIndex = getattr(g, '_postRequestIndex', 0)
-    setattr(g, '_postRequestIndex', postRequestIndex + 1)
-    print(postRequestIndex)
+    fields = request.get_json()
+    fields['name'] = removeSpecialChars( fields.get('name', '') )
+    fields['segment'] = translit( fields['name'] )
+    #print(fields)
+
+    """
+    if dbsess.query(Node).filter_by(name=fields['name']).count():
+        403 or 409 error
+    """
+
+    #node = Node(fields)
+    #dbsess.add(node)
+    #dbsess.commit()
     return dict(id=34, name='root', title='root', created=1431015379), 201
 
 @app.route('/api/catalog/<int:id>')
