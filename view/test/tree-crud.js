@@ -11,6 +11,7 @@ var url = '/api/catalog';
 var deferred = Q.defer();
 
 describe('POST ' + url, function() {
+        /*
     var promise = null;
     it('should create a new item', function(done) {
         promise = createItem(url, page);
@@ -20,7 +21,6 @@ describe('POST ' + url, function() {
     });
 
     cl(promise)
-        /*
     before(function() {
         return createItem(url, page).then(function(item) {
             resp = item;
