@@ -1,7 +1,8 @@
 var cl = console.log;
 var should = require('chai').should(),
-    Q = require('q'),
-    req = require('supertest')('http://localhost:5000');
+    Q = require('q');
+    Request = require('./crud/request');
+    //req = require('supertest')('http://localhost:5000');
 
 var page = {
     name: 'r\'o"o?t*/+' // root
@@ -9,30 +10,32 @@ var page = {
 
 var url = '/api/catalog';
 
-describe('CREATE ', function() {
-    (function() {
-        describe('POST ' + url, function() {
-            var deferred = Q.defer();
-            it('should create a new item', function(done) {
-                setTimeout(function() {
-                    deferred.resolve({ id: 823 });
-                    done();
-                }, 300);
+var req = new Request(url);
+req.create(page, function(item) {
+    it('should create an autoincremented id', function() {
+        //item.id checking
+    });
+    it('should create title field', function() {
+        //item.title checking
+    });
+    debugger
+}).then(function(item) {
+    req.read(item.id, function(item) {
+        it('should read the id', function() {
+        });
+        debugger
+    }).then(function(item) {
+        debugger
+        item.title = 'hello';
+        req.update(item, function(item) {
+            it('title should be updated', function() {
+                //item.title checking
             });
-        return deferred.promise;
-    })().then(function(item) {
-        var deferred = Q.defer();
-        describe('blabla', function() {
-            it('should throw an error when an item is duplicated', function(done) {
-                debugger
-                setTimeout(function() {
-                    deferred.resolve({ id: 823 });
-                    done();
-                }, 200);
+        }).then(function(item) {
+            req.delete(item.id, function(resp) {
+                it('resp should be empty', function() {
+                });
             });
         });
-        return deferred.promise;
-    }).then(function(item) {
-        cl('next');
     });
 });
