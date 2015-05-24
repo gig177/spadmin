@@ -10,16 +10,13 @@ Request.prototype.create = function(data, specs) {
     var deferred = Q.defer();
     var url = this._url;
     describe('POST ' + url, function() {
-        var item = null;
         before(function(done) {
-            createItem(url, data).then(function(resp) {
+            _create(url, data).then(function(resp) {
                 deferred.resolve(resp);
-                item = resp;
-                debugger
                 done();
             });
         });
-        specs(item);
+        specs(data)
     });
     return deferred.promise;
 }
@@ -29,7 +26,7 @@ Request.prototype.read = function(id, specs) {
     describe('GET ' + url, function() {
         var item = null;
         before(function(done) {
-            readItem(url).then(function(response) {
+            _read(url).then(function(response) {
                 deferred.resolve(response);
                 item = response;
                 done();
@@ -39,29 +36,29 @@ Request.prototype.read = function(id, specs) {
     });
     return deferred.promise;
 }
-Request.prototype.update = function(data) {
+Request.prototype.update = function(data, specs) {
     var deferred = Q.defer();
-    var url = this._url + '/id';
+    var url = this._url + '/' + data.id;
     describe('PATCH ' + url, function() {
         var item = null;
-        before(function() {
-            updateItem(url, data).then(function(response) {
+        before(function(done) {
+            _update(url, data).then(function(response) {
                 deferred.resolve(response);
                 item = response;
                 done();
             });
         });
+        specs(item);
     });
     return deferred.promise;
 }
 Request.prototype.delete = function(id, specs) {
     var deferred = Q.defer();
-
-    var url = this._url + '/id';
+    var url = this._url + '/' + id;
     describe('DELETE ' + url, function() {
         var resp = null;
         before(function() {
-            deleteItem(url).then(function(response) {
+            _delete(url).then(function(response) {
                 deferred.resolve();
                 resp = response;
                 done();
@@ -69,30 +66,31 @@ Request.prototype.delete = function(id, specs) {
         });
         specs(resp);
     });
+    return deferred.promise;
 }
 
-function createItem(url, data) {
+function _create(url, data) {
     var deferred = Q.defer();
     setTimeout(function() {
         deferred.resolve({ id: 823 });
     }, 300);
     return deferred.promise;
 }
-function readItem(url) {
+function _read(url) {
     var deferred = Q.defer();
     setTimeout(function() {
         deferred.resolve({ id: 823 });
     }, 200);
     return deferred.promise;
 }
-function updateItem(url, data) {
+function _update(url, data) {
     var deferred = Q.defer();
     setTimeout(function() {
         deferred.resolve({ id: 823 });
     }, 150);
     return deferred.promise;
 }
-function deleteItem(url) {
+function _delete(url) {
     var deferred = Q.defer();
     setTimeout(function() {
         deferred.resolve();

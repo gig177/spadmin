@@ -18,24 +18,21 @@ req.create(page, function(item) {
     it('should create title field', function() {
         //item.title checking
     });
-    debugger
 }).then(function(item) {
     req.read(item.id, function(item) {
-        it('should read the id', function() {
+        it('should read id', function() {
         });
-        debugger
     }).then(function(item) {
-        debugger
         item.title = 'hello';
         req.update(item, function(item) {
             it('title should be updated', function() {
                 //item.title checking
             });
-        }).then(function(item) {
+        }).then(function() {
             req.delete(item.id, function(resp) {
-                it('resp should be empty', function() {
+                it('blabla', function() {
                 });
-            });
+            })
         });
     });
 });
