@@ -96,4 +96,4 @@ def delete(id):
     node = _read(id)
     dbsess.delete(node)
     dbsess.commit()
-    return ''
+    return '', 202

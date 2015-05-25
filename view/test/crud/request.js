@@ -1,7 +1,7 @@
 var cl = console.log;
 var should = require('chai').should(),
-    Q = require('q');
-    //req = require('supertest')('http://localhost:5000');
+    Q = require('q'),
+    req = require('supertest')('http://localhost:5000');
 
 function Request(url) {
     this._url = url;
@@ -57,7 +57,7 @@ Request.prototype.delete = function(id, specs) {
     var url = this._url + '/' + id;
     describe('DELETE ' + url, function() {
         var resp = null;
-        before(function() {
+        before(function(done) {
             _delete(url).then(function(response) {
                 deferred.resolve();
                 resp = response;
@@ -71,30 +71,52 @@ Request.prototype.delete = function(id, specs) {
 
 function _create(url, data) {
     var deferred = Q.defer();
-    setTimeout(function() {
-        deferred.resolve({ id: 823 });
-    }, 300);
+    req.post(url)
+        .send(data)
+        .set('Content-Type', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .end(function(err, res) {
+            should.not.exist(err);
+            deferred.resolve(res.body);
+        });
     return deferred.promise;
 }
 function _read(url) {
     var deferred = Q.defer();
-    setTimeout(function() {
-        deferred.resolve({ id: 823 });
-    }, 200);
+    req.get(url)
+        .set('Content-Type', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+            should.not.exist(err);
+            deferred.resolve(res.body);
+        });
     return deferred.promise;
 }
 function _update(url, data) {
     var deferred = Q.defer();
-    setTimeout(function() {
-        deferred.resolve({ id: 823 });
-    }, 150);
+    req.patch(url)
+        .send(data)
+        .set('Content-Type', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end(function(err, res) {
+            should.not.exist(err);
+            deferred.resolve(res.body);
+        });
     return deferred.promise;
 }
 function _delete(url) {
     var deferred = Q.defer();
-    setTimeout(function() {
-        deferred.resolve();
-    }, 200);
+    req.delete(url)
+        .set('Content-Type', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(202)
+        .end(function(err, res) {
+            should.not.exist(err);
+            deferred.resolve(res.body);
+        });
     return deferred.promise;
 }
 
