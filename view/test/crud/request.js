@@ -10,13 +10,16 @@ Request.prototype.create = function(data, specs) {
     var deferred = Q.defer();
     var url = this._url;
     describe('POST ' + url, function() {
+        var item = null;
         before(function(done) {
-            _create(url, data).then(function(resp) {
-                deferred.resolve(resp);
+            _create(url, data).then(function(response) {
+                deferred.resolve(response);
+                item = response;
+                debugger
                 done();
             });
         });
-        specs(data)
+        //specs(item);
     });
     return deferred.promise;
 }

@@ -11,14 +11,18 @@ var page = {
 var url = '/api/catalog';
 
 var req = new Request(url);
-req.create(page, function(item) {
-    it('should create an autoincremented id', function() {
+req.create(page, {
+    'should create an autoincremented id': function() {
+        debugger
+        var foo = false;
+        foo.should.be.a('string')
         //item.id checking
-    });
-    it('should create title field', function() {
+    },
+    'should create title field': function() {
         //item.title checking
-    });
+    }
 }).then(function(item) {
+    debugger
     req.read(item.id, function(item) {
         it('should read id', function() {
         });
