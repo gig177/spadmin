@@ -1,8 +1,10 @@
 var cl = console.log;
-var should = require('chai').should(),
-    Q = require('q');
+var chai = require('chai'),
     Request = require('./crud/request');
     //req = require('supertest')('http://localhost:5000');
+
+var expect = chai.expect;
+chai.config.showDiff = true; 
 
 var page = {
     name: 'r\'o"o?t*/+' // root
@@ -11,18 +13,15 @@ var page = {
 var url = '/api/catalog';
 
 var req = new Request(url);
-req.create(page, {
-    'should create an autoincremented id': function() {
-        debugger
-        var foo = false;
-        foo.should.be.a('string')
-        //item.id checking
-    },
-    'should create title field': function() {
-        //item.title checking
-    }
+req.create(page, function() {
+    it('should create an autoincremented id', function() {
+        expect(this.item.id).to.be.a('number');
+    });
+    it('should create title field', function() {
+        expect(this.item).to.have.property('title');
+        expect(this.item.title).to.equal('root');
+    });
 }).then(function(item) {
-    debugger
     req.read(item.id, function(item) {
         it('should read id', function() {
         });
