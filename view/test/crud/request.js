@@ -42,15 +42,14 @@ Request.prototype.update = function(data, specs) {
     var deferred = Q.defer();
     var url = this._url + '/' + data.id;
     describe('PATCH ' + url, function() {
-        var item = null;
         before(function(done) {
             _update(url, data).then(function(response) {
                 deferred.resolve(response);
-                item = response;
+                this.item = response;
                 done();
             });
         });
-        specs(item);
+        specs();
     });
     return deferred.promise;
 }
