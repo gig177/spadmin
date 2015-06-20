@@ -42,21 +42,28 @@ def catalogChildren(pid=False):
 @app.route('/api/catalog', methods=['POST'])
 @jsonify(Node)
 def create():
-    fields = request.get_json()
-    fields['name'] = removeSpecialChars( fields.get('name', '') )
-    if 'segment' in fields:
-        fields['segment'] = translit( fields['segment'] )
-    else:
-        fields['segment'] = translit( fields['name'] )
-    #print(fields)
+    def _filterFields(fields):
+        fields['name'] = removeSpecialChars( fields.get('name', '') )
+        if 'segment' in fields:
+            fields['segment'] = translit( fields['segment'] )
+        else:
+            fields['segment'] = translit( fields['name'] )
+
+        fields['title'] = fields.get('title', '')
+        fields['title'] = removeSpecialChars( fields['title'] ) if fields['title'] else fields['name']
+    
+        return fields
 
     """
     if dbsess.query(Node).filter_by(name=fields['name']).count():
         403 or 409 error
     """
 
-    node = Node(fields['name'])
+    fields = _filterFields( request.get_json() )
+
+    node = Node( fields['name'] )
     node.segment = fields['segment']
+    node.title = fields['title']
     dbsess.add(node)
     dbsess.commit()
 

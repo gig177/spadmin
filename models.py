@@ -8,6 +8,7 @@ class Node(Base):
     id = Column(Integer, primary_key=True)
     pid = Column(Integer, ForeignKey('node.id'))
     name = Column(String(50))
+    title = Column(String(150))
     segment = Column(String(50))
     children = relationship('Node', backref=backref('parent', remote_side=id))
 

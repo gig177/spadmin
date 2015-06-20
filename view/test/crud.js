@@ -14,10 +14,13 @@ var url = '/api/catalog';
 
 var req = new Request(url);
 req.create(page, function() {
-    it('should create an autoincremented id', function() {
+    it('should create id', function() {
         expect(this.item.id).to.be.a('number');
     });
-    it('should create title field', function() {
+    it('should create segment', function() {
+        expect(this.item.segment).to.equal('root');
+    });
+    it('should create title', function() {
         expect(this.item).to.have.property('title');
         expect(this.item.title).to.equal('root');
     });
