@@ -27,15 +27,14 @@ Request.prototype.read = function(id, specs) {
     var deferred = Q.defer();
     var url = this._url + '/' + id;
     describe('GET ' + url, function() {
-        var item = null;
         before(function(done) {
             _read(url).then(function(response) {
                 deferred.resolve(response);
-                item = response;
+                this.item = response;
                 done();
-            });
+            }.bind(this));
         });
-        specs(item);
+        specs();
     });
     return deferred.promise;
 }

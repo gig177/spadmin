@@ -25,8 +25,9 @@ req.create(page, function() {
         expect(this.item.title).to.equal('root');
     });
 }).then(function(item) {
-    req.read(item.id, function(item) {
+    req.read(item.id, function() {
         it('should read id', function() {
+            expect(this.item.id).to.equal(item.id);
         });
     }).then(function(item) {
         item.title = 'hello';
@@ -36,8 +37,7 @@ req.create(page, function() {
             });
         }).then(function() {
             req.delete(item.id, function(resp) {
-                it('blabla', function() {
-                });
+                it('request should be done');
             })
         });
     });
