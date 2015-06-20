@@ -90,6 +90,8 @@ def update(id):
     node = _read(id)
     if 'name' in fields:
         node.name = removeSpecialChars( fields['name'] )
+    if 'title' in fields:
+        node.title = removeSpecialChars( fields['title'] )
     if 'segment' in fields:
         node.segment = translit( fields['segment'] )
     dbsess.add(node)

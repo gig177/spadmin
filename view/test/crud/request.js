@@ -47,7 +47,7 @@ Request.prototype.update = function(data, specs) {
                 deferred.resolve(response);
                 this.item = response;
                 done();
-            });
+            }.bind(this));
         });
         specs();
     });

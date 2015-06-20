@@ -33,7 +33,7 @@ req.create(page, function() {
         item.title = 'hello';
         req.update(item, function(item) {
             it('title should be updated', function() {
-                //item.title checking
+                expect(this.item.title).to.equal('hello');
             });
         }).then(function() {
             req.delete(item.id, function(resp) {
