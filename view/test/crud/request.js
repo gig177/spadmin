@@ -9,17 +9,27 @@ function Request(url) {
 Request.prototype.create = function(data, specs) {
     var deferred = Q.defer();
     var url = this._url;
-    describe('POST ' + url, function() {
-        before(function(done) {
-            _create(url, data).then(function(response) {
-                deferred.resolve(response);
-                this.item = response;
-                done();
-            }.bind(this));
+    if (specs) {
+        describe('POST ' + url, function() {
+            before(function(done) {
+                _create(url, data).then(function(response) {
+                    deferred.resolve(response);
+                    this.item = response;
+                    done();
+                }.bind(this));
+            });
+            specs();
         });
-        specs();
-    });
-
+    } else {
+        debugger
+        _create(url, data).then(function(response) {
+            debugger
+            cl('resp:', response)
+            deferred.resolve(response.id);
+        }, function(err) {
+            debugger
+        });
+    }
 
     return deferred.promise;
 }
@@ -57,15 +67,31 @@ Request.prototype.delete = function(id, specs) {
     var deferred = Q.defer();
     var url = this._url + '/' + id;
     describe('DELETE ' + url, function() {
-        var resp = null;
         before(function(done) {
             _delete(url).then(function(response) {
                 deferred.resolve();
-                resp = response;
                 done();
             });
         });
-        specs(resp);
+        specs();
+    });
+    return deferred.promise;
+}
+Request.prototype.children = function(hooks) {
+    var deferred = Q.defer();
+    //var url = this._url + '/' + id + '/children';
+    var url = this._url;
+    describe('GET ' + url + '/:id/children', function() {
+        before(hooks.before);
+        /*
+        before(function(done) {
+            hooks.before(done);
+        });
+        */
+        after(function(done) {
+            hooks.after(done, deferred);
+        });
+        hooks.specs();
     });
     return deferred.promise;
 }
