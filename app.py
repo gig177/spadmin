@@ -44,6 +44,7 @@ def catalogChildren(pid=False):
 def create():
     def _filterFields(fields):
         fields['name'] = removeSpecialChars( fields.get('name', '') )
+
         if 'segment' in fields:
             fields['segment'] = translit( fields['segment'] )
         else:
@@ -51,6 +52,7 @@ def create():
 
         fields['title'] = fields.get('title', '')
         fields['title'] = removeSpecialChars( fields['title'] ) if fields['title'] else fields['name']
+        fields['pid'] = fields.get('pid', None)
     
         return fields
 
@@ -59,9 +61,12 @@ def create():
         403 or 409 error
     """
 
+    print('in', request.get_json())
     fields = _filterFields( request.get_json() )
+    print('out', fields)
 
     node = Node( fields['name'] )
+    node.pid = fields['pid']
     node.segment = fields['segment']
     node.title = fields['title']
     dbsess.add(node)

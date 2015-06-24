@@ -21,13 +21,8 @@ Request.prototype.create = function(data, specs) {
             specs();
         });
     } else {
-        debugger
         _create(url, data).then(function(response) {
-            debugger
-            cl('resp:', response)
             deferred.resolve(response.id);
-        }, function(err) {
-            debugger
         });
     }
 

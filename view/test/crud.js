@@ -1,27 +1,22 @@
 var cl = console.log;
-var chai = require('chai'),
-    Q = require('q'),
-    Request = require('./crud/request');
-    //req = require('supertest')('http://localhost:5000');
-
-var expect = chai.expect;
-chai.config.showDiff = true; 
-
+var expect = require('chai').expect,
+    Q = require('q');
+var Request = require('./crud/request');
 
 var url = '/api/catalog';
 var req = new Request(url);
 
-SimpleCRUD().then(TreeCRUD);
-//SimpleCRUD();
+create()
+    .then(read)
+    .then(update)
+    .then(drop)
+    .then(children);
 
-function SimpleCRUD() {
-    var deferred = Q.defer();
-
+function create() {
     var page = {
         name: 'r\'o"o?t*/+' // root
     };
-
-    req.create(page, function() {
+    return req.create(page, function() {
         it('should create id', function() {
             expect(this.item.id).to.be.a('number');
         });
@@ -33,41 +28,50 @@ function SimpleCRUD() {
             expect(this.item.title).to.equal('root');
         });
     }).then(function(item) {
-        req.read(item.id, function() {
-            it('should read id', function() {
-                expect(this.item.id).to.equal(item.id);
+        return req.create({ name : 'child_1', pid : item.id }, function() {
+            it('should save pid', function() {
+                expect(this.item.pid).to.equal(item.id);
             });
-        }).then(function(item) {
-            item.title = 'hello';
-            req.update(item, function(item) {
-                it('title should be updated', function() {
-                    expect(this.item.title).to.equal('hello');
-                });
-            }).then(function() {
-                req.delete(item.id, function(resp) {
-                    it('request should be done');
-                }).then(function() {
-                    /*
-                    describe('GET ' + url, function() {
-                        it('request should be done');
-                    });
-                    */
-                    deferred.resolve();
-                });
-            });
-        });
+        })
     });
-    return deferred.promise;
 }
-function TreeCRUD() {
-    req.children({
+function read(item) {
+    return req.read(item.id, function() {
+        it('should read id', function() {
+            expect(this.item.id).to.equal(item.id);
+        });
+    })
+}
+function update(item) {
+    item.title = 'hello';
+    return req.update(item, function(item) {
+        it('title should be updated', function() {
+            expect(this.item.title).to.equal('hello');
+        });
+    })
+}
+function drop(item) {
+    return req.delete(item.id, function(resp) {
+        it('request should be done');
+    });
+}
+function children() {
+    return req.children({
         before: function(done) {
             //req.create({ name : 'root' }).then(function(rootId) { });
+            req.create({ name : 'root' }).then(function(rootId) {
+                debugger
+                req.create({ name : 'child-1', pid : rootId }).then(function(id) {
+                    done();
+                });
+            });
+            /*
             setTimeout(function() {
                 cl('before');
                 this.resp = { 'hello' : 'lol' };
                 done();
             }.bind(this), 300);
+            */
         },
         after: function(done, deferred) {
             setTimeout(function() {
