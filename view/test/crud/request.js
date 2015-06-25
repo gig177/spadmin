@@ -6,16 +6,10 @@ var should = require('chai').should(),
 function Request(url) {
     this._url = url;
 }
-Request.prototype.create = function(data, specs) {
+Request.prototype.create = function(data, specs, cleanup) {
     var deferred = Q.defer();
     var url = this._url;
-    debugger
     if (specs) {
-        var hooks = {};
-        if (typeof specs === 'object') {
-            hooks = specs;
-            specs = specs.specs;
-        }
         describe('POST ' + url, function() {
             before(function(done) {
                 _create(url, data).then(function(response) {
@@ -24,13 +18,11 @@ Request.prototype.create = function(data, specs) {
                     done();
                 }.bind(this));
             });
-            if ('after' in hooks)
-                hooks.after();
             specs();
         });
     } else {
         _create(url, data).then(function(response) {
-            deferred.resolve(response.id);
+            deferred.resolve(response);
         });
     }
 
@@ -69,33 +61,21 @@ Request.prototype.update = function(data, specs) {
 Request.prototype.delete = function(id, specs) {
     var deferred = Q.defer();
     var url = this._url + '/' + id;
-    describe('DELETE ' + url, function() {
-        before(function(done) {
-            _delete(url).then(function(response) {
-                deferred.resolve();
-                done();
+    if (specs) {
+        describe('DELETE ' + url, function() {
+            before(function(done) {
+                _delete(url).then(function(response) {
+                    deferred.resolve();
+                    done();
+                });
             });
+            specs();
         });
-        specs();
-    });
-    return deferred.promise;
-}
-Request.prototype.children = function(hooks) {
-    var deferred = Q.defer();
-    //var url = this._url + '/' + id + '/children';
-    var url = this._url;
-    describe('GET ' + url + '/:id/children', function() {
-        before(hooks.before);
-        /*
-        before(function(done) {
-            hooks.before(done);
+    } else {
+        _delete(url).then(function(response) {
+            deferred.resolve();
         });
-        */
-        after(function(done) {
-            hooks.after(done, deferred);
-        });
-        hooks.specs();
-    });
+    }
     return deferred.promise;
 }
 
