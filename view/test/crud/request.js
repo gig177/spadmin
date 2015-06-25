@@ -9,7 +9,13 @@ function Request(url) {
 Request.prototype.create = function(data, specs) {
     var deferred = Q.defer();
     var url = this._url;
+    debugger
     if (specs) {
+        var hooks = {};
+        if (typeof specs === 'object') {
+            hooks = specs;
+            specs = specs.specs;
+        }
         describe('POST ' + url, function() {
             before(function(done) {
                 _create(url, data).then(function(response) {
@@ -18,6 +24,8 @@ Request.prototype.create = function(data, specs) {
                     done();
                 }.bind(this));
             });
+            if ('after' in hooks)
+                hooks.after();
             specs();
         });
     } else {

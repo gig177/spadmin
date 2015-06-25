@@ -8,9 +8,11 @@ var req = new Request(url);
 
 create()
     .then(read)
+    /*
     .then(update)
     .then(drop)
     .then(children);
+    */
 
 function create() {
     var page = {
@@ -28,11 +30,17 @@ function create() {
             expect(this.item.title).to.equal('root');
         });
     }).then(function(item) {
-        return req.create({ name : 'child_1', pid : item.id }, function() {
-            it('should save pid', function() {
-                expect(this.item.pid).to.equal(item.id);
-            });
-        })
+        return req.create({ name : 'child_1', pid : item.id }, {
+            after: function(done) {
+                debugger
+                done();
+            },
+            specs: function() {
+                it('should save pid', function() {
+                    expect(this.item.pid).to.equal(item.id);
+                });
+            }
+        });
     });
 }
 function read(item) {
