@@ -11,6 +11,7 @@
     "gulp-task-swig": "^1.0.4"
   },
   "devDependencies": {
+    "chai": "^3.3.0",
     "mocha": "^2.2.5",
     "q": "^1.4.1",
     "supertest": "^1.0.1"
